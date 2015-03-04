@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -14,6 +16,7 @@ import static com.cnnranderson.b2dtut.utils.Constants.PPM;
 public class Application extends ApplicationAdapter {
 
     private boolean DEBUG = false;
+    private final float SCALE = 2.0f;
 
     private OrthographicCamera camera;
 
@@ -21,19 +24,25 @@ public class Application extends ApplicationAdapter {
     private World world;
     private Body player;
 
+    private SpriteBatch batch;
+    private Texture tex;
+
     @Override
     public void create () {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, w / 2, h / 2);
+        camera.setToOrtho(false, w / SCALE, h / SCALE);
 
-        world = new World(new Vector2(0, -9.8f), false);
+        world = new World(new Vector2(0f, -9.8f), false);
         b2dr = new Box2DDebugRenderer();
 
         player = createBox(8, 10, 32, 32, false);
         createBox(0, 0, 64, 32, true);
+
+        batch = new SpriteBatch();
+        tex = new Texture("Images/cat.png");
     }
 
     @Override
@@ -44,6 +53,10 @@ public class Application extends ApplicationAdapter {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.begin();
+        batch.draw(tex, player.getPosition().x * PPM - tex.getWidth() / 2, player.getPosition().y * PPM - tex.getHeight() / 2);
+        batch.end();
+
         b2dr.render(world, camera.combined.scl(PPM));
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
@@ -51,7 +64,7 @@ public class Application extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width / 2, height / 2);
+        camera.setToOrtho(false, width / SCALE, height / SCALE);
     }
 
     @Override
@@ -65,6 +78,7 @@ public class Application extends ApplicationAdapter {
 
         inputUpdate(delta);
         cameraUpdate(delta);
+        batch.setProjectionMatrix(camera.combined);
     }
 
     public void inputUpdate(float delta) {
