@@ -54,7 +54,7 @@ public class Application extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(tex, player.getPosition().x * PPM - tex.getWidth() / 2, player.getPosition().y * PPM - tex.getHeight() / 2);
+        batch.draw(tex, player.getPosition().x * PPM - (tex.getWidth() / 2), player.getPosition().y * PPM - (tex.getHeight() / 2));
         batch.end();
 
         b2dr.render(world, camera.combined.scl(PPM));
@@ -71,6 +71,7 @@ public class Application extends ApplicationAdapter {
     public void dispose() {
         world.dispose();
         b2dr.dispose();
+        batch.dispose();
     }
 
     public void update(float delta) {
