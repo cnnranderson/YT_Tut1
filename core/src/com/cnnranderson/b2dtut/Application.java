@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -20,6 +23,9 @@ public class Application extends ApplicationAdapter {
 
     private OrthographicCamera camera;
 
+    private OrthogonalTiledMapRenderer tmr;
+    private TiledMap map;
+
     private Box2DDebugRenderer b2dr;
     private World world;
     private Body player;
@@ -28,7 +34,7 @@ public class Application extends ApplicationAdapter {
     private Texture tex;
 
     @Override
-    public void create () {
+    public void create() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -38,11 +44,14 @@ public class Application extends ApplicationAdapter {
         world = new World(new Vector2(0f, -9.8f), false);
         b2dr = new Box2DDebugRenderer();
 
-        player = createBox(8, 10, 32, 32, false);
-        createBox(0, 0, 64, 32, true);
+        player = createBox(140, 140, 32, 32, false);
+        createBox(140, 130, 64, 32, true);
 
         batch = new SpriteBatch();
         tex = new Texture("Images/cat.png");
+
+        map = new TmxMapLoader().load("Maps/test_map.tmx");
+        tmr = new OrthogonalTiledMapRenderer(map);
     }
 
     @Override
@@ -56,6 +65,8 @@ public class Application extends ApplicationAdapter {
         batch.begin();
         batch.draw(tex, player.getPosition().x * PPM - (tex.getWidth() / 2), player.getPosition().y * PPM - (tex.getHeight() / 2));
         batch.end();
+
+        tmr.render();
 
         b2dr.render(world, camera.combined.scl(PPM));
 
@@ -72,6 +83,9 @@ public class Application extends ApplicationAdapter {
         world.dispose();
         b2dr.dispose();
         batch.dispose();
+        tex.dispose();
+        tmr.dispose();
+        map.dispose();
     }
 
     public void update(float delta) {
@@ -79,6 +93,7 @@ public class Application extends ApplicationAdapter {
 
         inputUpdate(delta);
         cameraUpdate(delta);
+        tmr.setView(camera);
         batch.setProjectionMatrix(camera.combined);
     }
 

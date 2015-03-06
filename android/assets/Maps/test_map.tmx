@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="32" tileheight="32" nextobjectid="3">
+ <tileset firstgid="1" name="main" tilewidth="32" tileheight="32">
+  <image source="../Images/tileset.png" width="192" height="128"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="12" height="12">
+  <data encoding="base64" compression="zlib">
+   eJzjZ2Bg4AViZgKYD4j5oWp5GAgDbqgeTiLUwgDLqHqqqxcGYjYi1LICsQgDJI5BergIYJhaAKsXAbM=
+  </data>
+ </layer>
+ <objectgroup name="collision-layer">
+  <object id="2" x="32" y="320">
+   <polyline points="0,0 0,-256 32,-288 288,-288 320,-256 320,0 288,32 32,32 0,0"/>
+  </object>
+ </objectgroup>
+</map>
