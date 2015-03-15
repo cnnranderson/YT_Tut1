@@ -1,4 +1,4 @@
-package com.cnnranderson.b2dtut.utils;
+package com.cnnranderson.tutorial.utils;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
