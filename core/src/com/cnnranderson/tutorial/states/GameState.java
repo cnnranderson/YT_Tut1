@@ -19,9 +19,11 @@ public abstract class GameState {
         camera = app.getCamera();
     }
 
-    public abstract void handleInput();
+    public void resize(int w, int h) {
+        camera.setToOrtho(false, w, h);
+    }
+
     public abstract void update(float delta);
     public abstract void render();
-    public abstract void resize(int w, int h);
     public abstract void dispose();
 }

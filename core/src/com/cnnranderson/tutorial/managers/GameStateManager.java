@@ -3,24 +3,20 @@ package com.cnnranderson.tutorial.managers;
 
 import com.cnnranderson.tutorial.Application;
 import com.cnnranderson.tutorial.states.GameState;
-import com.cnnranderson.tutorial.states.LoadingState;
 import com.cnnranderson.tutorial.states.SplashState;
 
 import java.util.Stack;
 
-public class GameStateManager extends Stack<GameState> {
+public class GameStateManager {
 
     // Application Reference
     private final Application app;
 
+    private Stack<GameState> states;
+
     // Possible Game States
     public enum State {
-        SPLASH,
-        LOADING,
-        MAINMENU,
-        LEVELSELECT,
-        PLAY,
-        GAMEOVER
+        SPLASH
     }
 
     /**
@@ -31,7 +27,8 @@ public class GameStateManager extends Stack<GameState> {
      */
     public GameStateManager(final Application app) {
         this.app = app;
-        pushState(State.SPLASH);
+        this.states = new Stack<GameState>();
+        this.setState(State.SPLASH);
     }
 
     public Application application() {
@@ -39,45 +36,38 @@ public class GameStateManager extends Stack<GameState> {
     }
 
     public void update(float delta) {
-        peek().update(delta);
+        states.peek().update(delta);
     }
 
     public void render() {
-        peek().render();
+        states.peek().render();
     }
 
     public void resize(int w, int h) {
-        peek().resize(w, h);
+        states.peek().resize(w, h);
     }
 
-    private GameState getState(State state) {
-        switch (state) {
-            case SPLASH:
-                return new SplashState(this);
-            case LOADING:
-                return new LoadingState(this);
-            case MAINMENU:
-                return null;
-            case LEVELSELECT:
-                return null;
-            case PLAY:
-                return null;
-            case GAMEOVER:
-                return null;
+    public void dispose() {
+        for(GameState gs : states) {
+            gs.dispose();
         }
-        return null;
+        states.clear();
     }
 
     public void setState(State state) {
-        popState();
-        pushState(state);
+        states.push(getState(state));
+        if(states.size() > 5) {
+            states.remove(0).dispose();
+        }
     }
 
-    public void pushState(State state) {
-        push(getState(state));
+    public void endCurrentState() {
+        if(states.size() > 1) {
+            states.pop().dispose();
+        }
     }
 
-    public void popState() {
-        pop().dispose();
+    private GameState getState(State state) {
+        return new SplashState(this);
     }
 }
