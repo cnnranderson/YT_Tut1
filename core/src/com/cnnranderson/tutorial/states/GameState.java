@@ -6,16 +6,17 @@ import com.cnnranderson.tutorial.Application;
 import com.cnnranderson.tutorial.managers.GameStateManager;
 
 public abstract class GameState {
+
+    // References
     protected GameStateManager gsm;
     protected Application app;
-
     protected SpriteBatch batch;
     protected OrthographicCamera camera;
 
     protected GameState(GameStateManager gsm) {
         this.gsm = gsm;
-        app = gsm.application();
-        batch = app.getSpriteBatch();
+        this.app = gsm.application();
+        batch = app.getBatch();
         camera = app.getCamera();
     }
 
