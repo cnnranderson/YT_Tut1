@@ -2,7 +2,6 @@ package com.cnnranderson.tutorial.managers;
 
 import com.cnnranderson.tutorial.Application;
 import com.cnnranderson.tutorial.states.GameState;
-import com.cnnranderson.tutorial.states.MainMenuState;
 import com.cnnranderson.tutorial.states.SplashState;
 
 import java.util.Stack;
@@ -58,7 +57,7 @@ public class GameStateManager {
     private GameState getState(State state) {
         switch(state) {
             case SPLASH: return new SplashState(this);
-            case MAINMENU: return new MainMenuState(this);
+            case MAINMENU: return null;
         }
         return null;
     }
