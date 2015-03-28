@@ -2,6 +2,7 @@ package com.cnnranderson.tutorial.managers;
 
 import com.cnnranderson.tutorial.Application;
 import com.cnnranderson.tutorial.states.GameState;
+import com.cnnranderson.tutorial.states.PlayState;
 import com.cnnranderson.tutorial.states.SplashState;
 
 import java.util.Stack;
@@ -15,13 +16,13 @@ public class GameStateManager {
 
     public enum State {
         SPLASH,
-        MAINMENU
+        PLAY
     }
 
     public GameStateManager(final Application app) {
         this.app = app;
         this.states = new Stack<GameState>();
-        this.setState(State.SPLASH);
+        this.setState(State.PLAY);
     }
 
     public Application application() {
@@ -57,7 +58,7 @@ public class GameStateManager {
     private GameState getState(State state) {
         switch(state) {
             case SPLASH: return new SplashState(this);
-            case MAINMENU: return null;
+            case PLAY: return new PlayState(this);
         }
         return null;
     }
