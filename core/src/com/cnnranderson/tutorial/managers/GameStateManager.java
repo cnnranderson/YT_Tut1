@@ -1,9 +1,7 @@
 package com.cnnranderson.tutorial.managers;
 
 import com.cnnranderson.tutorial.Application;
-import com.cnnranderson.tutorial.states.GameState;
-import com.cnnranderson.tutorial.states.PlayState;
-import com.cnnranderson.tutorial.states.SplashState;
+import com.cnnranderson.tutorial.states.*;
 
 import java.util.Stack;
 
@@ -16,13 +14,19 @@ public class GameStateManager {
 
     public enum State {
         SPLASH,
-        PLAY
+        PLAY,
+        DUNGEON,
+        FILTER,
+        LIGHTS,
+        JOINTS,
+        CONTACT,
+        LASER
     }
 
     public GameStateManager(final Application app) {
         this.app = app;
         this.states = new Stack<GameState>();
-        this.setState(State.PLAY);
+        this.setState(State.FILTER);
     }
 
     public Application application() {
@@ -58,7 +62,14 @@ public class GameStateManager {
     private GameState getState(State state) {
         switch(state) {
             case SPLASH: return new SplashState(this);
-            case PLAY: return new PlayState(this);
+            case PLAY: return new SplashState(this);
+            case FILTER: return new TutFilterState(this);
+            case DUNGEON: return new DungeonState(this);
+            case LASER: return new LaserState(this);
+
+            //case LIGHTS: return new TutLightsState(this);
+            //case JOINTS: return new TutJointState(this);
+            //case CONTACT: return new TutContactState(this);
         }
         return null;
     }
