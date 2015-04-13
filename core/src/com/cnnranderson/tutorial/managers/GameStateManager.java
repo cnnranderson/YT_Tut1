@@ -26,7 +26,7 @@ public class GameStateManager {
     public GameStateManager(final Application app) {
         this.app = app;
         this.states = new Stack<GameState>();
-        this.setState(State.FILTER);
+        this.setState(State.LIGHTS);
     }
 
     public Application application() {
@@ -66,9 +66,9 @@ public class GameStateManager {
             case FILTER: return new TutFilterState(this);
             case DUNGEON: return new DungeonState(this);
             case LASER: return new LaserState(this);
+            case JOINTS: return new TutJointState(this);
+            case LIGHTS: return new TutLightsState(this);
 
-            //case LIGHTS: return new TutLightsState(this);
-            //case JOINTS: return new TutJointState(this);
             //case CONTACT: return new TutContactState(this);
         }
         return null;

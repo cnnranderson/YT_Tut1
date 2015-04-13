@@ -54,7 +54,7 @@ public class DungeonState extends GameState {
         // HUD init
         font = new BitmapFont();
         hud = new OrthographicCamera();
-        hud.setToOrtho(false, camera.viewportWidth, camera.viewportHeight);
+        hud.setToOrtho(false, 720, 480);
 
         // b2d world init
         world = new World(new Vector2(0f, 0f), false);
@@ -84,6 +84,13 @@ public class DungeonState extends GameState {
         player.controller(delta);
 
         // Change camera track type
+        if(Gdx.input.isTouched()) {
+            if (camera.zoom < 5) {
+                camera.zoom += .1f;
+            } else if(camera.zoom > 5) {
+                camera.zoom -= .1f;
+            }
+        }
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             cameraVal += 1;
             if(cameraVal > 3) {
@@ -95,7 +102,7 @@ public class DungeonState extends GameState {
         }
         // Room Transition Check
         // Go Right
-        if(player.getPosition().x > (target.x + camera.viewportWidth / 2) / PPM) {
+        if(player.getPosition().x > (target.x + 360) / PPM) {
             target.x += 720;
             pos.x += 1;
             if(rooms[(int)pos.x][(int)pos.y] == null) {
@@ -103,7 +110,7 @@ public class DungeonState extends GameState {
             }
         }
         // Go Left
-        if(player.getPosition().x < (target.x - camera.viewportWidth / 2) / PPM) {
+        if(player.getPosition().x < (target.x - 360) / PPM) {
             target.x -= 720;
             pos.x -= 1;
             if(rooms[(int)pos.x][(int)pos.y] == null) {
@@ -111,7 +118,7 @@ public class DungeonState extends GameState {
             }
         }
         // Go Up
-        if(player.getPosition().y > (target.y + camera.viewportHeight / 2) / PPM) {
+        if(player.getPosition().y > (target.y + 240) / PPM) {
             target.y += 480;
             pos.y += 1;
             if(rooms[(int)pos.x][(int)pos.y] == null) {
@@ -119,7 +126,7 @@ public class DungeonState extends GameState {
             }
         }
         // Go Down
-        if(player.getPosition().y < (target.y - camera.viewportHeight / 2) / PPM) {
+        if(player.getPosition().y < (target.y - 240) / PPM) {
             target.y -= 480;
             pos.y -= 1;
             if(rooms[(int)pos.x][(int)pos.y] == null) {

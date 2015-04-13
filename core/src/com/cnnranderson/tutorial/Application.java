@@ -58,14 +58,15 @@ public class Application extends ApplicationAdapter {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) gsm.setState(GameStateManager.State.DUNGEON);
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) gsm.setState(GameStateManager.State.FILTER);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) gsm.setState(GameStateManager.State.LASER);
-        //if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) gsm.setState(GameStateManager.State.LIGHTS);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) gsm.setState(GameStateManager.State.LASER);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) gsm.setState(GameStateManager.State.LIGHTS);
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
 
     @Override
     public void resize(int width, int height) {
-        gsm.resize((int) (width / SCALE), (int) (height / SCALE));
+        gsm.resize((int) (720 / SCALE), (int) (480 / SCALE));
     }
 
     @Override

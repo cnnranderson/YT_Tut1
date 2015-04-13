@@ -118,7 +118,7 @@ public class Player {
             heldAttack = true;
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isTouched()) {
             x -= 1;
             current = wLeft.getKeyFrame(animState, true);
 
