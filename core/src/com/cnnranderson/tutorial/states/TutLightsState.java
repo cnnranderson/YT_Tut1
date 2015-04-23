@@ -1,5 +1,6 @@
 package com.cnnranderson.tutorial.states;
 
+import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.cnnranderson.tutorial.managers.GameStateManager;
 import com.cnnranderson.tutorial.utils.CameraStyles;
 import com.cnnranderson.tutorial.utils.b2d.BodyBuilder;
+import com.cnnranderson.tutorial.utils.b2d.LightBuilder;
 
 import static com.cnnranderson.tutorial.utils.Constants.PPM;
 
@@ -23,14 +25,15 @@ public class TutLightsState extends GameState {
     private Body player;
 
     private RayHandler rayHandler;
-    private PointLight myLight;
+    private PointLight pl;
+    private ConeLight cl;
 
     public TutLightsState(GameStateManager gsm) {
         super(gsm);
         this.world = new World(new Vector2(0, 0), false);
         this.b2dr = new Box2DDebugRenderer();
 
-        this.player = BodyBuilder.createBox(world, 0, 0, 32, 32, false, true);
+        this.player = BodyBuilder.createBox(world, 0, 0, 32, 32, false, false);
         this.player.setLinearDamping(20f);
 
         BodyBuilder.createBox(world, 200, 0, 40, 150, true, true);
@@ -41,9 +44,7 @@ public class TutLightsState extends GameState {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(.5f);
 
-        myLight = new PointLight(rayHandler, 20, Color.WHITE, 6, 0, 0);
-        myLight.setSoftnessLength(0f);
-        myLight.attachToBody(player);
+        cl = LightBuilder.createConeLight(rayHandler, player, Color.WHITE, 6, player.getAngle(), 30);
     }
 
     @Override
@@ -100,6 +101,5 @@ public class TutLightsState extends GameState {
             player.setLinearVelocity(player.getLinearVelocity().x, y * 350 * delta);
         }
     }
-
 
 }

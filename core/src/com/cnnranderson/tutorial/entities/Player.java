@@ -38,9 +38,9 @@ public class Player {
         this.body.setLinearDamping(20f);
         this.body.setAngularDamping(1.3f);
 
-        light = new PointLight(rays, 200, new Color(1f, 1f, 1f, .9f), 7, 0, 0);
-        light.setSoftnessLength(0f);
-        light.attachToBody(body);
+        //light = new PointLight(rays, 200, new Color(1f, 1f, 1f, .9f), 7, 0, 0);
+        //light.setSoftnessLength(0f);
+        //light.attachToBody(body);
 
         Filter f = new Filter();
         f.groupIndex = -1;

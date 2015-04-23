@@ -8,69 +8,6 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.cnnranderson.tutorial.utils.Constants;
 
 public class JointBuilder {
-
-    public static final class RevoluteBuilder {
-
-        World world;
-        Body bodyA, bodyB;
-        Vector2 anchorA, anchorB;
-        boolean collide, isMotorized;
-        float speed, maxSpeed;
-
-        public RevoluteBuilder(World world, Body bodyA, Body bodyB, boolean collide) {
-            this.world = world;
-            this.bodyA = bodyA;
-            this.bodyB = bodyB;
-            this.collide = collide;
-            anchorA = new Vector2(0, 0);
-            anchorB = new Vector2(0, 0);
-            isMotorized = false;
-        }
-
-        public RevoluteBuilder bodyA(Body body) {
-            bodyA = body;
-            return this;
-        }
-
-        public RevoluteBuilder bodyB(Body body) {
-            bodyB = body;
-            return this;
-        }
-
-        public RevoluteBuilder motor(float speed, float maxSpeed) {
-            isMotorized = true;
-            this.speed = speed;
-            this.maxSpeed = maxSpeed;
-            return this;
-        }
-
-        public RevoluteBuilder anchorA(float x, float y) {
-            anchorA.set(x, y).scl(1 / Constants.PPM);
-            return this;
-        }
-
-        public RevoluteBuilder anchorB(float x, float y) {
-            anchorB.set(x, y).scl(1 / Constants.PPM);
-            return this;
-        }
-
-        public Joint build() {
-            RevoluteJointDef rDef = new RevoluteJointDef();
-            rDef.bodyA = bodyA;
-            rDef.bodyB = bodyB;
-            rDef.collideConnected = collide;
-            rDef.localAnchorA.set(anchorA);
-            rDef.localAnchorB.set(anchorB);
-
-            if(isMotorized) {
-                rDef.enableMotor = true;
-                rDef.motorSpeed = speed;
-                rDef.maxMotorTorque = maxSpeed;
-            }
-            return world.createJoint(rDef);
-        }
-    }
-
     /**
      * Creates a Revolute joint between two bodies
      * @param world The world where bodies exist

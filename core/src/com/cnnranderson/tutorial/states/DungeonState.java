@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.cnnranderson.tutorial.map.FloorSwitch;
 import com.cnnranderson.tutorial.entities.Player;
@@ -61,6 +62,7 @@ public class DungeonState extends GameState {
         world.setContactListener(new WorldContactListener());
         rays = new RayHandler(world);
         rays.setAmbientLight(.4f);
+        
         b2dr = new Box2DDebugRenderer();
 
         // Camera init stuff
@@ -84,7 +86,8 @@ public class DungeonState extends GameState {
         player.controller(delta);
 
         // Change camera track type
-        if(Gdx.input.isTouched()) {
+        if(Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+            createLamp(player.getPosition().scl(32));
             if (camera.zoom < 5) {
                 camera.zoom += .1f;
             } else if(camera.zoom > 5) {
@@ -273,5 +276,41 @@ public class DungeonState extends GameState {
         currentTorch = new PointLight(rays, 20, new Color(.8f, .1f, .2f, .7f), 4, 0, 0);
         currentTorch.setSoftnessLength(0f);
         currentTorch.attachToBody(b);
+    }
+    private void addTorch(Body b) {
+        b.setLinearDamping(2f);
+        b.getFixtureList().get(0).setRestitution(.4f);
+        Filter f = new Filter();
+        f.categoryBits = Constants.BIT_SENSOR;
+        f.maskBits = Constants.BIT_PLAYER | Constants.BIT_WALL;
+        b.getFixtureList().get(0).setFilterData(f);
+        currentTorch = new PointLight(rays, 20, new Color(.8f, .1f, .2f, .7f), 4, 0, 0);
+        currentTorch.setSoftnessLength(0f);
+        currentTorch.attachToBody(b);
+    }
+    private void createLamp(Vector2 position) {
+        Body lamp = BodyBuilder.createCircle(world, position.x, position.y, 3, false, false,
+                Constants.BIT_WALL, Constants.BIT_PLAYER, (short) 0);
+
+        Body clamp = BodyBuilder.createBox(world, position.x, (position.y - 32), 3, 3, true, true,
+                Constants.BIT_SENSOR, Constants.BIT_SENSOR, (short) 0);
+
+        Body clamp2 = BodyBuilder.createBox(world, position.x, (position.y + 64), 3, 3, true, true,
+                Constants.BIT_SENSOR, Constants.BIT_SENSOR, (short) 0);
+
+        DistanceJointDef jDef = new DistanceJointDef();
+        jDef.bodyA = clamp2;
+        jDef.bodyB = lamp;
+        jDef.collideConnected = false;
+        jDef.length = 64f / PPM;
+        world.createJoint(jDef);
+
+        jDef.bodyA = clamp;
+        jDef.dampingRatio = .85f;
+        jDef.length = 3f / PPM;
+        jDef.frequencyHz = 1.40f;
+        world.createJoint(jDef);
+
+        addTorch(lamp);
     }
 }
